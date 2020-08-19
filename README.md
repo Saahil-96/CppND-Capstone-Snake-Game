@@ -30,6 +30,25 @@ The code for this repo was inspired by [this](https://codereview.stackexchange.c
 
 In this game, the starter code allows the user to use the SDL Library to simulate and play the classic snake game. The snake is allowed to roam outside of the game window only to come in from the opposite end and increases speed whenever it eats some food and dies whenever it touches it's own body. The game also makes sure it keeps a consistent frame rate based on the user PC by constantly checking and readjusting.
 
+## V1.1 Update
+
+In this update, food was changed to 3 types: Regular, Apple or Poison. Eating these types of foods would allow the snake to either gain invincibility for the next 4 seconds or be poisoned for the next 4 seconds.
+
+Invincibility:
+1. Snake stops growing in size
+2. Snake can no longer bite itself
+3. Snake changes color
+
+Poisoned mode:
+1. Snake speed increases to 2x
+2. Score becomes half
+3. Snake changes color
+
+This is executed in code by converting food into a class and not just an SDL point that has it's own enums Regular, Apple and Poison. The apple and poison appear randomly on the map for whenever score is a multiple of 5 or 7 respectively. If the snake does not eat these special foods and still eats the regular food in that turn, these foods vanish.
+If the snake does eat either, boolean values for godmode or poisoned are toggled to true for the snake.
+
+This also necessitated new files to be built for the food class.
+
 ## Main Aim
 
 To give new features to the game and allow for use of concurrency as well as smart pointers.
@@ -41,16 +60,19 @@ SDL Library, Cmake, C++, Gaming, Simulation
 ## File descriptions
 
 ### Controller.h/.cpp -
-Access the controller attributes of SDL
+Access the controller attributes of SDL.
 
 ### Main.h/.cpp -
-Run the main code
+Run the main code.
 
 ### Renderer.h/cpp -
-Render the whole environment for the game at each iteration
+Render the whole environment for the game at each iteration.
 
 ### Game.h/cpp -
 Runs the game and updates screen using render each iteration and checks if snake has eaten food while regularly checking if snake is alive.
 
-### Snake.h/cpp
-Give attributes to the object snake and update it's head, body and make sure the snake does not eat itself
+### Snake.h/cpp -
+Give attributes to the object snake and update it's head, body and make sure the snake does not eat itself.
+
+### Food.h/cpp ( V1.1 ) -
+Introduces the class food.
