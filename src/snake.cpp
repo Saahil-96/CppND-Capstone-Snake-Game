@@ -38,35 +38,40 @@ void Snake::UpdateHead() {
       break;
   }
 
-  // Wrap the Snake around to the beginning if going off of the screen.
-  head_x = fmod(head_x + grid_width, grid_width);
+  head_x = fmod(head_x + grid_width, grid_width); // Wrap the Snake around to the beginning if going off of the screen.
   head_y = fmod(head_y + grid_height, grid_height);
 }
 
 void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell) {
-  // Add previous head location to vector
-  body.push_back(prev_head_cell);
 
-  if (!growing) {
-    // Remove the tail from the vector.
-    body.erase(body.begin());
-  } else {
+  body.push_back(prev_head_cell);   // Add previous head location to vector
+
+  if (!growing) 
+  {
+    body.erase(body.begin()); // Remove the tail from the vector.
+  } 
+  else 
+  {
     growing = false;
     size++;
   }
 
-  // Check if the snake has died.
-  for (auto const &item : body) {
+  for (auto const &item : body) // Check if the snake has died
+  {
     if (current_head_cell.x == item.x && current_head_cell.y == item.y) {
-      alive = false;
+      if(!godmode){alive = false;} // Snake can only die if not in godmode
     }
   }
 }
 
-void Snake::GrowBody() { growing = true; }
+void Snake::GrowBody() { if(!godmode){growing = true;} }
 
-// Inefficient method to check if cell is occupied by snake.
-bool Snake::SnakeCell(int x, int y) {
+bool Snake::SnakeCell(int x, int y) // Check if cell is occupied by snake.
+{  
+  if (godmode)
+  {
+    return false; // Make sure that snake cannot destroy itself when in godmode
+  }
   if (x == static_cast<int>(head_x) && y == static_cast<int>(head_y)) {
     return true;
   }

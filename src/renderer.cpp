@@ -9,8 +9,8 @@ Renderer::Renderer(const std::size_t screen_width,
       screen_height(screen_height),
       grid_width(grid_width),
       grid_height(grid_height) {
-  // Initialize SDL
-  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+
+  if (SDL_Init(SDL_INIT_VIDEO) < 0) { // Initialize SDL
     std::cerr << "SDL could not initialize.\n";
     std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
   }
@@ -25,8 +25,7 @@ Renderer::Renderer(const std::size_t screen_width,
     std::cerr << " SDL_Error: " << SDL_GetError() << "\n";
   }
 
-  // Create renderer
-  sdl_renderer = SDL_CreateRenderer(sdl_window, -1, SDL_RENDERER_ACCELERATED);
+  sdl_renderer = SDL_CreateRenderer(sdl_window, -1, SDL_RENDERER_ACCELERATED); // Create renderer
   if (nullptr == sdl_renderer) {
     std::cerr << "Renderer could not be created.\n";
     std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
@@ -38,31 +37,56 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const &food) {
+void Renderer::Render(Snake const snake, Food const &food, int apple_x, int apple_y, int poison_x, int poison_y, bool apple, bool poison) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
 
-  // Clear screen
-  SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
+  SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);  // Clear screen
   SDL_RenderClear(sdl_renderer);
 
-  // Render food
-  SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xCC, 0x00, 0xFF);
-  block.x = food.x * block.w;
-  block.y = food.y * block.h;
-  SDL_RenderFillRect(sdl_renderer, &block);
+  if(apple)   // If apple should exist somewhere on map
+  {
+    SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x1E, 0xFF, 0xFF); //Render apple
+    block.x = apple_x * block.w;
+    block.y = apple_y * block.h;
+    SDL_RenderFillRect(sdl_renderer, &block);
+  } 
 
-  // Render snake's body
-  SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+  else if(poison) // If poison should exist somewhere on map
+  {
+    SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);//Render poison
+    block.x = poison_x * block.w;
+    block.y = poison_y * block.h;
+    SDL_RenderFillRect(sdl_renderer, &block);
+  }
+  
+  if(food.att==food.regular) 
+  {
+    SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xCC, 0x00, 0xFF); //Render regular food
+    block.x = food.loc.x * block.w;
+    block.y = food.loc.y * block.h;
+    SDL_RenderFillRect(sdl_renderer, &block);
+  }
+
+  SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF); //Render snake's body
   for (SDL_Point const &point : snake.body) {
     block.x = point.x * block.w;
     block.y = point.y * block.h;
     SDL_RenderFillRect(sdl_renderer, &block);
   }
 
-  // Render snake's head
-  block.x = static_cast<int>(snake.head_x) * block.w;
+  if(snake.godmode)
+  {SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x1E, 0xFF, 0xFF);} //Render godmode body
+  else if(snake.poisoned)
+  {SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);} //Render poisoned body
+  for (SDL_Point const &point : snake.body) {
+    block.x = point.x * block.w;
+    block.y = point.y * block.h;
+    SDL_RenderFillRect(sdl_renderer, &block);
+   }
+
+  block.x = static_cast<int>(snake.head_x) * block.w; // Render snake's head
   block.y = static_cast<int>(snake.head_y) * block.h;
   if (snake.alive) {
     SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x7A, 0xCC, 0xFF);
@@ -71,8 +95,7 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   }
   SDL_RenderFillRect(sdl_renderer, &block);
 
-  // Update Screen
-  SDL_RenderPresent(sdl_renderer);
+  SDL_RenderPresent(sdl_renderer); // Update Screen
 }
 
 void Renderer::UpdateWindowTitle(int score, int fps) {
