@@ -1,12 +1,8 @@
 # CPPND: Capstone Snake Game Example
 
-This is a starter repo for the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses.
+The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses.
 
 <img src="snake_game.gif"/>
-
-The Capstone Project gives you a chance to integrate what you've learned throughout this program. This project will become an important part of your portfolio to share with current and future colleagues and employers.
-
-In this project, you can build your own C++ application or extend this Snake game, following the principles you have learned throughout this Nanodegree Program. This project will demonstrate that you can independently create applications using a wide range of C++ features.
 
 ## Dependencies for Running Locally
 * cmake >= 3.7
@@ -29,3 +25,32 @@ In this project, you can build your own C++ application or extend this Snake gam
 2. Make a build directory in the top level directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
 4. Run it: `./SnakeGame`.
+
+## Current Features
+
+In this game, the starter code allows the user to use the SDL Library to simulate and play the classic snake game. The snake is allowed to roam outside of the game window only to come in from the opposite end and increases speed whenever it eats some food and dies whenever it touches it's own body. The game also makes sure it keeps a consistent frame rate based on the user PC by constantly checking and readjusting.
+
+## Main Aim
+
+To give new features to the game and allow for use of concurrency as well as smart pointers.
+
+## Keywords
+
+SDL Library, Cmake, C++, Gaming, Simulation
+
+## File descriptions
+
+### Controller.h/.cpp -
+Access the controller attributes of SDL
+
+### Main.h/.cpp -
+Run the main code
+
+### Renderer.h/cpp -
+Render the whole environment for the game at each iteration
+
+### Game.h/cpp -
+Runs the game and updates screen using render each iteration and checks if snake has eaten food while regularly checking if snake is alive.
+
+### Snake.h/cpp
+Give attributes to the object snake and update it's head, body and make sure the snake does not eat itself
