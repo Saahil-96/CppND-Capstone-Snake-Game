@@ -53,10 +53,6 @@ This also necessitated new files to be built for the food class.
 
 To give new features to the game and allow for use of concurrency as well as smart pointers.
 
-## Keywords
-
-SDL Library, Cmake, C++, Gaming, Simulation
-
 ## File descriptions
 
 ### Controller.h/.cpp -
@@ -76,3 +72,6 @@ Give attributes to the object snake and update it's head, body and make sure the
 
 ### Food.h/cpp ( V1.1 ) -
 Introduces the class food.
+
+## Keywords
+OOP, SDL Library, Cmake, C++, Gaming, Simulation
